@@ -5,7 +5,6 @@ from typing import Any
 def json_path_to_dict_path(json_path: str):
     map_reference = json_path.replace('[', '.')
     map_reference = map_reference.replace(']', '')
-
     dict_path = map_reference.split('.')
 
     for i in range(len(dict_path)):
@@ -103,12 +102,3 @@ def transform(source_dict: dict, map_definition) -> dict:
 
     explore(map_definition)
     return map_definition
-
-
-if __name__ == '__main__':
-    # b = {'b': 'b-value', 'c': 'c-value'}
-    # a = {'a': MapItem(None, allow_null=False)}
-    # source = transform(b, a)
-    # print(source)
-    c =  json_path_to_dict_path('g.c[1]')
-    print (c)
