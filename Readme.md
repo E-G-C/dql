@@ -1,4 +1,8 @@
+## DictQL
 Allows to query a dictionary (based on a json file) in a sql-like style. 
+Select:  string, either '*' indicating all the fields or list of fields.
+From:  string, the json-path to the element to be queried.
+Where: string, optional, represents a valid Python expression to be evaluated.
 See bellow, more examples in the [test file](dql/test_file.json):
 ```
         # descriptive names
