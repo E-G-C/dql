@@ -1,6 +1,5 @@
-    Allows to query a dictionary (based on a json file) to be queried
-    sql-like style. 
-    example:
+Allows to query a dictionary (based on a json file) to be queried sql-like style. 
+example:
 ```
         # descriptive names
         from dql import DictQL
