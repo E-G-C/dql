@@ -1,4 +1,4 @@
-Allows to query a dictionary (based on a json file) to be queried sql-like style. 
+Allows to query a dictionary (based on a json file) to be queried in a sql-like style. 
 example:
 ```
         # descriptive names
