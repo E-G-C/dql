@@ -1,6 +1,7 @@
 from unittest import TestCase
 import json
-from dictQL import DictQL
+
+from dql import DictQL
 
 
 class DictQL_test(TestCase):
@@ -29,17 +30,17 @@ class DictQL_test(TestCase):
         self.assertEqual(actual.sort(), expected.sort())
 
     def test_pulling_elements_from_dict(self):
-        dd2 = DictQL(self.source).Select('source,d2').From('g.c').Where('source==10')
+        dd2 = DictQL(self.source).Select('d,d2').From('g.c').Where('source==10')
         self.assertEqual(dd2, [])
 
-        actual_list = DictQL(self.source).Select('source,d6').From('g.c').Where('source==None')
+        actual_list = DictQL(self.source).Select('d4,d6').From('g.c').Where('d5==20')
         actual_dict = actual_list[0]
-        print(actual_list)
-        expected_dict = {'d6': 50, 'source': None}
+        expected_dict = {'d4': 4, 'd6': 50}
 
         same_items = {k: actual_dict[k] for k in actual_dict if
                       k in expected_dict and actual_dict[k] == expected_dict[k]}
         self.assertEqual(len(same_items), 2)
 
-        actual_list2 = DictQL(self.source).Select('d1').From('g.c').Where('source==5 or source=="5"')
+        actual_list2 = DictQL(self.source).Select('d1').From('g.c').Where(
+            'd==5 or d=="5"')
         print(actual_list2)
