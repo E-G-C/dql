@@ -28,19 +28,6 @@ waxed_dict = {
         'b': WaxOn(None, RemWax([None]))
         }
 
-#  Rename the class as DWaxer?
-#  add two kind o patches , a RemovePatch and a ReplacePatch
-#  add them to the WaxOn call and decide based on the class type
-#  it will look like this:
-#
-#      waxed_dict = { 'a': WaxOn([value], ReplacePatch(replacement dictionary)]
-#      waxed_dict = { 'a' : WaxOn([value], RemovePatch([list of values to remove from dictionary)}
-#
-#
-#
-#
-#
-
 
 c = waxoff(source, waxed_dict)
 print(c)
