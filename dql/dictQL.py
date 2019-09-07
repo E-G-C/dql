@@ -20,7 +20,6 @@ def _get_where_result(instance, condition):
     raise Exception('Unsupported type')
 
 
-
 def eval_condition(condition, locals):
     """Evaluates the condition, if a given variable used in the condition
     isn't present, it defaults it to None
@@ -32,7 +31,7 @@ def eval_condition(condition, locals):
         if type(node) is ast.Name:
             condition_variables.add(node.id)
     for v in condition_variables:
-        if not v in locals:
+        if v not in locals:
             locals[v] = None
     result = eval(condition, {}, locals)
     return result
@@ -53,7 +52,6 @@ def get_sub_list(source, selection, path, condition='True'):
         result = [v for v in source if eval_condition(condition, {selection[0]: v})]
     elif isinstance(source[0], dict):
         for d in source:
-            # if selection[0] == '*': selection = source.selection()
             new_item = get_sub_dict(d, selection, condition)
             if new_item: result.append(new_item)
     return result
@@ -72,7 +70,11 @@ def get_sub_dict(source, selection, condition='True'):
         selection = source.keys()
 
     if eval_condition(condition, source):
+
         result = {k: v for (k, v) in source.items() if (k in selection)}
+        for missing_key in selection:
+            if missing_key not in result.keys():
+                result[missing_key] = None
     return result
 
 
@@ -179,7 +181,7 @@ class DictQL:
         self.f = self.From
 
     def Select(self, target):
-        self.target = target.split(',')
+        self.target = list(map(lambda x: x.strip(), target.split(',')))
         return self
 
     def From(self, *path):
