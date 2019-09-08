@@ -29,7 +29,7 @@ source = {
 single_element = DictQL(source).Select('b').From('b')
 print(f'Single element {single_element}')
 
-partial_dict = DictQL(source).Select('d0,d2').From('c')
+partial_dict = DictQL(source).Select('d0, d2').From('c')
 print(f'partial dict: {partial_dict}')
 
 full_dict = DictQL(source).Select('*').From('nested.g').Where('l==200')
