@@ -1,3 +1,6 @@
+# ---------------------------------
+#          Utils
+# -------------------------------
 
 
 def json_path_to_dict_path(json_path: str):
@@ -30,6 +33,13 @@ def dig(your_dict, *keys):
     return end_of_chain if key_present else None
 
 
+# ----------------------------------------------------------------
+#               Where related methods
+# ----------------------------------------------------------------
+def _where_bool_(instance):
+    """Used for truth value testing"""
+    return True if instance.source else False
+
 
 def _get_where_result(instance, condition):
     """Executes the condition against the given instance.source value,
@@ -50,6 +60,9 @@ def _get_where_result(instance, condition):
     raise Exception('Unsupported type')
 
 
+# ----------------------------------------------------------------
+#          "From" and "Select" common methods
+# ----------------------------------------------------------------
 def eval_condition(condition, locals):
     """Evaluates the condition, if a given variable used in the condition
     isn't present, it defaults it to None
@@ -88,8 +101,15 @@ def get_sub_list(source, selection, path, condition='True'):
 
 
 def get_sub_dict(source, selection, condition='True'):
-    """Applies the condition to dictionary values
     """
+    Applies the condition to dictionary values
+    :param source: dictionary to apply the condition
+    :param selection: keys to extract from source dictionary
+    :param condition: condition to apply
+    :return: either the original dictionary or a new dictionary
+    with the extracted keys
+    """
+
     if condition is None:
         if selection[0] == '*':
             return source
@@ -108,8 +128,14 @@ def get_sub_dict(source, selection, condition='True'):
     return result
 
 
+# ----------------------------------------------------------------
+#     End of common methods
+# ----------------------------------------------------------------
+
 class _From:
-    """"""
+    """
+    json path to the json element to query from.
+    """
 
     def __call__(self):
         if self.path:
@@ -127,7 +153,7 @@ class _From:
                      dict(source=result, selection=self.selection,
                           path=self.path,
                           Where=_get_where_result,
-                          w=_get_where_result))
+                          w=_get_where_result, __bool__=_where_bool_))
         ql_result = Where(from_result)
         return ql_result
 
@@ -149,9 +175,9 @@ class _From:
 
 class DictQL:
     """Allows to query a dictionary (based on a json file) to be queried
-    sql-like style. example:
-    :param Select:  string, either '*' indicating all the fields or list
-    of fields.
+    sql-like style.
+    :param Select:  string, either '*' indicating all the fields or comma
+    separated field names
     :param From:  string, the path to the element to be queried.
     :param Where: string, optional, represents a valid Python expression
     to be evaluated
