@@ -121,10 +121,35 @@ def get_sub_dict(source, selection, condition='True'):
 
     if eval_condition(condition, source):
 
-        result = {k: v for (k, v) in source.items() if (k in selection)}
-        for missing_key in selection:
+        # result = {k: v for (k, v) in source.items() if (k in selection)}
+        #
+        # for missing_key in selection:
+        #     if missing_key not in result.keys():
+        #         result[missing_key] = None
+        #
+
+        result = {}
+
+        all_keys = set()
+
+        selection_array = []
+
+        for sp in selection:
+            as_item = sp.split('as')
+            selection_array.append(as_item)
+
+        for s_k, s_v in source.items():
+            for s in selection_array:
+                key = s[-1].strip()
+                all_keys.add(key)
+                if s_k == s[0].strip():
+                    result[key] = s_v
+
+        for missing_key in all_keys:
             if missing_key not in result.keys():
                 result[missing_key] = None
+
+
     return result
 
 
@@ -236,8 +261,8 @@ class DictQL:
         self.s = self.Select
         self.f = self.From
 
-    def Select(self, target):
-        self.target = list(map(lambda x: x.strip(), target.split(',')))
+    def Select(self, selection):
+        self.target = list(map(lambda x: x.strip(), selection.split(',')))
         return self
 
     def From(self, *path):
@@ -245,5 +270,6 @@ class DictQL:
         _from.source = self.source
         _from.selection = self.target
 
-        _from.path = json_path_to_dict_path(path[0])
+
+        _from.path = json_path_to_dict_path(path[0]) if path else None
         return _from()
