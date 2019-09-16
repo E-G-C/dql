@@ -133,13 +133,25 @@ def get_sub_dict(source, selection, condition='True'):
         all_keys = set()
 
         selection_array = []
+        constants = []
 
         for sp in selection:
-            as_item = sp.split('as')
-            selection_array.append(as_item)
+            if ':' in sp:
+                cons = sp.split(':')
+                raw_value = cons[1].strip()
+                raw_key = cons[0].strip()
+                key_value = eval(raw_value) if raw_value.isnumeric() else raw_value
+                key = eval(raw_key) if raw_key.isnumeric() else raw_key
+                constants.append({key: key_value})
+            else:
+                as_item = sp.split('as')
+                selection_array.append(as_item)
 
         for s_k, s_v in source.items():
             for s in selection_array:
+                for cons in constants:
+                    k, v = next(iter(cons.items()))
+                    result[k] = v
                 key = s[-1].strip()
                 all_keys.add(key)
                 if s_k == s[0].strip():
@@ -148,7 +160,6 @@ def get_sub_dict(source, selection, condition='True'):
         for missing_key in all_keys:
             if missing_key not in result.keys():
                 result[missing_key] = None
-
 
     return result
 
@@ -269,7 +280,6 @@ class DictQL:
         _from = _From()
         _from.source = self.source
         _from.selection = self.target
-
 
         _from.path = json_path_to_dict_path(path[0]) if path else None
         return _from()

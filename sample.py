@@ -67,7 +67,18 @@ else:
 
 
 print('-'*20)
-print(' List ')
+print('Key aliases ')
 
 x = source_ql.Select('a as "this used to be a", b as y, j as z').From()
 print(x)
+
+
+
+print('-'*20)
+print('Constants ')
+
+cons1 = source_ql.Select('constant_name: 2, b as y').From()
+print(cons1)
+
+cons2 = source_ql.Select('b:4, b as y, 3:$').From()
+print(cons2)
