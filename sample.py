@@ -1,6 +1,6 @@
-# from dql import DictQL
+
 from dql import DictQL
-# shorthanded version
+
 import json
 
 source = {
@@ -31,8 +31,12 @@ source_ql = DictQL(source)
 
 print('-'*20)
 print('Single element')
-single_element = source_ql.Select('b').From('b')
-print(f'b={single_element}')
+single_element_1 = source_ql.Select('b').From('b')
+print(f"source_ql.Select('b').From('b')={single_element_1}")
+# equivalent to
+print(f"this is equivalent to:")
+single_element_2 = source_ql.s('*').From('b')
+print(f"source_ql.Select('*').From('b')={single_element_2}")
 
 print('-'*20)
 print('Sub Dic ')

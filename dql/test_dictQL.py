@@ -42,5 +42,5 @@ class DictQL_test(TestCase):
         self.assertEqual(len(same_items), 2)
 
         actual_list2 = DictQL(self.source).Select('d1').From('g.c').Where(
-            'd==5 or d=="5"')
+                'd==5 or d=="5"')
         print(actual_list2)
